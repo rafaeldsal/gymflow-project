@@ -94,7 +94,7 @@ Para promover agilidade para os professores, entre um aluno e outro, o sistema d
 
 ## Matrículas
 
-* Caso de Uso: UC-MAT-001 - Realizar Matrícula
+- Caso de Uso: UC-MAT-001 - Realizar Matrícula
   - Ator Principal: Recpcionista / Administrador
   - Pré-condições: O aluno deve fornecer um CPF válido e não estar cadastrado no sistema e o plano desejado pelo aluno deve estar disponível no sistema.
   - Pós-condições: O aluno é cadastrado, sua matrícula é gerada com o status PENDENTE (RN-MAT-001) e o histórico é iniciado (RN-MAT-005).
@@ -104,11 +104,10 @@ Para promover agilidade para os professores, entre um aluno e outro, o sistema d
     2. O sistema solicita os dados do aluno, incluindo CPF, nome completo, email, telefone, data de nascimento e plano desejado.
     3. O/A recepcionista/administrador insere os dados do aluno no sitema e escolhe o plano desejado.
     4. O sistema valida o formato do CPF, se o email é válido, se o plano escolhido está ativo e se o aluno já possui matrícula ativa (RN-MAT-001, RN-MAT-002).
-    5. O sistema valida se o aluno já possui matrícula ativa ou inadimplente (RN-MAT-001). 
+    5. O sistema valida se o aluno já possui matrícula ativa ou inadimplente (RN-MAT-001).
     6. O sistema salva o cadastro do aluno.
     7. O sistema gera a matrícula do aluno vinculado ao plano escolhido, com status PENDENTE (RN-MAT-001).
     8. O sistema confirma sucesso da operação para o/a recepcionista/administrador e exibe os detalhes da matrícula gerada.
-  
   - Fluxo de exceção:
     - 4º passo - CPF Inválido ou Duplicado:
       1. O sistema identifica que o CPF digitado é inválido ou já pertence a outro aluno cadastrado.
@@ -119,10 +118,8 @@ Para promover agilidade para os professores, entre um aluno e outro, o sistema d
       1. O sistema identifica que o aluno já possui uma matrícula ativa ou inadimplente.
       2. O sistema exibe uma mensagem de erro: "Não foi possível realizar a matrícula: Aluno já possui matrícula ativa."
       3. O fluxo é abortado.
-    
 
-  
-* Caso de Uso: UC-MAT-002 - Alterar Plano de Matrícula
+- Caso de Uso: UC-MAT-002 - Alterar Plano de Matrícula
   - Ator Principal: Recepcionista / Administrador
   - Pré-condições: O aluno deve ter uma matrícula ativa ou inadimplente e o plano desejado pelo aluno deve estar disponível no sistema.
   - Pós-condições: A matrícula atual do aluno é encerrada (status CANCELADO) e uma nova matrícula é criada com o novo plano escolhido, mantendo o histórico de alterações (RN-MAT-004, RN-MAT-005).
@@ -162,7 +159,7 @@ Para promover agilidade para os professores, entre um aluno e outro, o sistema d
       2. O sistema exibe uma mensagem de erro: "Não foi possível alterar o plano: Erro ao registrar alteração de plano."
       3. O fluxo é abortado.
 
-* Caso de Uso: UC-MAT-003 - Consultar Histórico de Matrículas
+- Caso de Uso: UC-MAT-003 - Consultar Histórico de Matrículas
   - Ator Principal: Aluno / Recepcionista / Administrador
   - Pré-condições: O aluno deve estar cadastrado no sistema.
   - Pós-condições: O sistema exibe o histórico completo das matrículas do aluno, incluindo datas de início e término, status e alterações de plano (RN-MAT-005).
@@ -180,7 +177,7 @@ Para promover agilidade para os professores, entre um aluno e outro, o sistema d
       2. O sistema exibe uma mensagem de erro: "Não foi possível consultar o histórico: Aluno não cadastrado."
       3. O fluxo é abortado.
 
-* Caso de Uso: UC-MAT-004 - Processar inadimplência diaria
+- Caso de Uso: UC-MAT-004 - Processar inadimplência diaria
   - Ator Principal: Sistema
   - Pré-condições: O sistema deve estar configurado para processar inadimplência diariamente.
   - Pós-condições: O sistema verifica as matrículas ativas e atualiza o status para INADIMPLENTE caso o aluno esteja com pagamento atrasado por mais de 5 dias, bloqueando o acesso físico/catraca (RN-MAT-003).
@@ -206,7 +203,7 @@ Para promover agilidade para os professores, entre um aluno e outro, o sistema d
 
 ## Controle de Planos
 
-* Caso de Uso: UC-PLA-001 - Criar Plano de Assinatura
+- Caso de Uso: UC-PLA-001 - Criar Plano de Assinatura
   - Ator Principal: Administrador
   - Pré-condições: O administrador deve estar autenticado no sistema.
   - Pós-condições: Um novo plano de assinatura é criado e adicionado ao sistema (RN-PLA-001).
@@ -224,18 +221,16 @@ Para promover agilidade para os professores, entre um aluno e outro, o sistema d
       1. O sistema identifica que os dados inseridos para o plano são inválidos ou inconsistentes.
       2. O sistema exibe uma mensagem de erro: "Não foi possível criar o plano: Dados inválidos."
       3. O fluxo retorna ao passo 2.
-    
     - 5º passo - Erro ao salvar plano:
       1. O sistema identifica que houve um erro ao tentar salvar o novo plano de assinatura no banco de dados.
       2. O sistema exibe uma mensagem de erro: "Não foi possível criar o plano: Erro ao salvar no banco de dados."
       3. O fluxo é abortado.
-    
     - 6º passo - Erro ao exibir detalhes do plano:
       1. O sistema identifica que houve um erro ao tentar exibir os detalhes do novo plano criado.
       2. O sistema exibe uma mensagem de erro: "Não foi possível exibir os detalhes do plano: Erro ao recuperar informações."
       3. O fluxo é abortado.
 
-* Caso de Uso: UC-PLA-002 - Editar Plano de Assinatura
+- Caso de Uso: UC-PLA-002 - Editar Plano de Assinatura
   - Ator Principal: Administrador
   - Pré-condições: O administrador deve estar autenticado no sistema e o plano a ser editado deve estar ativo.
   - Pós-condições: O plano de assinatura é atualizado com as novas informações fornecidas pelo administrador (RN-PLA-001, RN-PLA-004).
@@ -253,18 +248,16 @@ Para promover agilidade para os professores, entre um aluno e outro, o sistema d
       1. O sistema identifica que os dados inseridos para o plano são inválidos ou inconsistentes.
       2. O sistema exibe uma mensagem de erro: "Não foi possível editar o plano: Dados inválidos."
       3. O fluxo retorna ao passo 2.
-    
     - 5º passo - Erro ao atualizar plano:
       1. O sistema identifica que houve um erro ao tentar atualizar o plano de assinatura no banco de dados.
       2. O sistema exibe uma mensagem de erro: "Não foi possível editar o plano: Erro ao atualizar no banco de dados."
       3. O fluxo é abortado.
-    
     - 6º passo - Erro ao exibir detalhes do plano:
       1. O sistema identifica que houve um erro ao tentar exibir os detalhes atualizados do plano.
       2. O sistema exibe uma mensagem de erro: "Não foi possível exibir os detalhes do plano: Erro ao recuperar informações."
       3. O fluxo é abortado.
 
-* Caso de Uso: UC-PLA-003 - Desativar Plano de Assinatura
+- Caso de Uso: UC-PLA-003 - Desativar Plano de Assinatura
   - Ator Principal: Administrador
   - Pré-condições: O administrador deve estar autenticado no sistema e o plano a ser desativado deve estar ativo.
   - Pós-condições: O plano de assinatura é desativado, impedindo novos alunos de se matricularem nesse plano, mas mantendo o acesso para alunos já matriculados (RN-PLA-002, RN-PLA-005).
@@ -282,13 +275,12 @@ Para promover agilidade para os professores, entre um aluno e outro, o sistema d
       1. O sistema identifica que há alunos ativos vinculados ao plano.
       2. O sistema exibe uma mensagem de erro: "Não foi possível desativar o plano: Existem alunos ativos vinculados a este plano."
       3. O fluxo é abortado.
-    
     - 5º passo - Erro ao alterar status do plano:
       1. O sistema identifica que houve um erro ao tentar alterar o status do plano para desativado.
       2. O sistema exibe uma mensagem de erro: "Não foi possível desativar o plano: Erro ao atualizar status no banco de dados."
       3. O fluxo é abortado.
 
-* Caso de Uso: UC-PLA-004 - Consultar Histórico de Alterações de Planos
+- Caso de Uso: UC-PLA-004 - Consultar Histórico de Alterações de Planos
   - Ator Principal: Administrador
   - Pré-condições: O administrador deve estar autenticado no sistema.
   - Pós-condições: O sistema exibe o histórico completo das alterações de planos, incluindo datas de início e término, status e alterações de benefícios (RN-PLA-003).
@@ -306,7 +298,7 @@ Para promover agilidade para os professores, entre um aluno e outro, o sistema d
       2. O sistema exibe uma mensagem de erro: "Não foi possível consultar o histórico: Plano não cadastrado."
       3. O fluxo é abortado.
 
-* Caso de Uso: UC-PLA-005 - Notificar Alunos sobre Alterações de Planos
+- Caso de Uso: UC-PLA-005 - Notificar Alunos sobre Alterações de Planos
   - Ator Principal: Sistema / Administrador
   - Pré-condições: O administrador deve estar autenticado no sistema e o plano alterado deve ter alunos ativos vinculados.
   - Pós-condições: Os alunos vinculados ao plano alterado são notificados sobre as alterações realizadas (RN-PLA-006).
@@ -321,7 +313,7 @@ Para promover agilidade para os professores, entre um aluno e outro, o sistema d
       1. O sistema identifica que não há alunos ativos vinculados ao plano alterado.
       2. O fluxo é encerrado sem envio de notificações.
 
-* Caso de Uso: UC-PLA-006 - Acesso a Planos Desativados
+- Caso de Uso: UC-PLA-006 - Acesso a Planos Desativados
   - Ator Principal: Aluno
   - Pré-condições: O aluno deve ter uma matrícula ativa vinculada a um plano desativado.
   - Pós-condições: O aluno continua tendo acesso aos benefícios do plano desativado até o término de sua matrícula (RN-PLA-005).
@@ -339,7 +331,7 @@ Para promover agilidade para os professores, entre um aluno e outro, o sistema d
 
 ## Evolução do Aluno
 
-* Caso de Uso: UC-TRN-001 - Criar Ficha de Treino
+- Caso de Uso: UC-TRN-001 - Criar Ficha de Treino
   - Ator Principal: Professor / Administrador
   - Pré-condições: O professor deve estar autenticado no sistema e o aluno deve ter uma matrícula ativa.
   - Pós-condições: Uma nova ficha de treino é criada e vinculada ao aluno e ao professor responsável, com prazo de validade definido (RN-TRN-001, RN-TRN-007).
@@ -357,12 +349,135 @@ Para promover agilidade para os professores, entre um aluno e outro, o sistema d
       1. O sistema identifica que os dados inseridos para a ficha de treino são inválidos ou inconsistentes.
       2. O sistema exibe uma mensagem de erro: "Não foi possível criar a ficha de treino: Dados inválidos."
       3. O fluxo retorna ao passo 2.
-    
     - 5º passo - Erro ao salvar ficha:
       1. O sistema identifica que houve um erro ao tentar salvar a nova ficha de treino no banco de dados.
       2. O sistema exibe uma mensagem de erro: "Não foi possível criar a ficha de treino: Erro ao salvar no banco de dados."
       3. O fluxo é abortado.
-    
     - 6º passo - Erro ao exibir detalhes da ficha:
       1. O sistema identifica que houve um erro ao tentar exibir os detalhes da nova ficha de treino criada.
       2. O sistema exibe uma mensagem de erro: "Não foi possível exibir os detalhes da ficha: Erro ao recuperar
+
+  Ajustar
+
+  Aluno (Student)
+
+* id (UUID)
+* nome (String)
+* CPF (String - Único e Validado)
+* email (String)
+* telefone (String)
+* dataCadastro (LocalDateTime - Registra quando ele entrou no sistema)]
+* dataUltimaAtualizacao (LocalDateTime)
+* endereco (Value Object - Endereço do aluno)
+  - rua (String)
+  - numero (String)
+  - bairro (String)
+  - cidade (String)
+  - estado (String)
+  - cep (String)
+
+Matrícula (Enrollment)
+
+- id (UUID)
+- studentId (UUID - Referência ao Aluno)
+- planId (UUID - Referência ao Plano)
+- dataInicio (LocalDate - Data de início da matrícula)
+- dataFim (LocalDate - Calculada com base na periodicidade do plano)
+- status (Enum - PENDENTE, ATIVO, INADIMPLENTE, CANCELADO)
+- motivoCancelamento (String - Opcional, apenas se o status for CANCELADO)
+- dataCriacao (LocalDateTime - Registra quando a matrícula foi criada)
+- dataUltimaAtualizacao (LocalDateTime - Registra a última atualização da matrícula)
+
+Histórico de Matrículas (EnrollmentHistory)
+
+- id (UUID)
+- enrollmentId (UUID - Referência à Matrícula)
+- statusAnterior (Enum - PENDENTE, ATIVO, INADIMPLENTE, CANCELADO)
+- statusAtual (Enum - PENDENTE, ATIVO, INADIMPLENTE, CANCELADO)
+- planoAnterior (UUID - Referência ao Plano anterior, se houver)
+- planoAtual (UUID - Referência ao Plano atual)
+- dataAlteracao (LocalDateTime - Registra quando a alteração ocorreu)
+- justificativa (String - Opcional, apenas se houver uma justificativa para a alteração)
+
+Plano (Plan)
+
+- id (UUID)
+- nome (String)
+- descricao (String)
+- periodicidade (Enum - MENSAL, TRIMESTRAL, SEMESTRAL, ANUAL)
+- preço (BigDecimal - Valor do plano)
+- dataCriacao (LocalDateTime - Registra quando o plano foi criado)
+- dataUltimaAtualizacao (LocalDateTime - Registra a última atualização do plano)
+- status (Enum - ATIVO, INATIVO)
+- beneficioId (List<UUID> - Referência ao Benefício associado ao plano, se houver)
+
+Benefício (Benefit)
+
+- id (UUID)
+- nome (String)
+- descricao (String)
+- dataCriacao (LocalDateTime - Registra quando o benefício foi criado)
+- dataUltimaAtualizacao (LocalDateTime - Registra a última atualização do benefício)
+- status (Enum - ATIVO, INATIVO)
+
+Professor (Instructor)
+
+- id (UUID)
+- nome (String)
+- telefone (String)
+- email (String)
+- especialidade (String)
+- dataCriacao (LocalDateTime - Registra quando o professor foi criado)
+- dataUltimaAtualizacao (LocalDateTime - Registra a última atualização do professor)
+- status (Enum - ATIVO, INATIVO)
+
+Ficha de Treino (TrainingSheet)
+
+- id (UUID)
+- studentId (UUID - Referência ao Aluno)
+- instructorId (UUID - Referência ao Professor)
+- dataCriacao (LocalDateTime - Registra quando a ficha de treino foi criada)
+- dataUltimaAtualizacao (LocalDateTime - Registra a última atualização da ficha de treino)
+- status (Enum - ATIVO, INATIVO)
+- validade (LocalDate - Data de validade da ficha de treino)
+- exercicios (List<Exercise> - Lista de exercícios associados à ficha de treino)
+- objetivo (String - Objetivo da ficha de treino, como "Hipertrofia", "Emagrecimento", etc.)
+- observacoes (String - Observações adicionais sobre a ficha de treino)
+- frequenciaTreino (Enum - DIARIO, SEMANAL, MENSAL - Frequência recomendada para o treino)
+- nivelDificuldade (Enum - INICIANTE, INTERMEDIARIO, AVANCADO - Nível de dificuldade da ficha de treino)
+
+Exercício (Exercise)
+
+- id (UUID)
+- nome (String)
+- descricao (String)
+- series (Integer - Número de séries recomendadas)
+- repeticoes (Integer - Número de repetições recomendadas)
+- descanso (Integer - Tempo de descanso entre séries em segundos)
+- equipamento (String - Equipamento necessário para o exercício, se houver)
+- nivelDificuldade (Enum - INICIANTE, INTERMEDIARIO, AVANCADO - Nível de dificuldade do exercício)
+- dataCriacao (LocalDateTime - Registra quando o exercício foi criado)
+- dataUltimaAtualizacao (LocalDateTime - Registra a última atualização do exercício)
+- status (Enum - ATIVO, INATIVO)
+- categoria (Enum - CARDIO, FORCA, FLEXIBILIDADE, EQUILIBRIO - Categoria do exercício)
+- objetivo (String - Objetivo do exercício, como "Fortalecimento", "Alongamento", etc.)
+- videoUrl (String - URL de um vídeo demonstrativo do exercício, se houver)
+
+{
+"name": "String",
+"cpf": "String",
+"email": "String",
+"phone": "String",
+"address": {
+"street": "String",
+"number": "String",
+"complement": "String",
+"neighborhood": "String",
+"city": "String",
+"state": "String",
+"zipCode": "String"
+},
+"enrollment": {
+"planId": "String"
+}
+}https://drawsql.app/draw
