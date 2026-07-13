@@ -1,0 +1,38 @@
+spring:
+  profiles:
+    active: dev
+
+  application:
+    name: gymflow
+
+server:
+  port: 8080
+  servlet:
+    context-path: /gymflow
+
+
+# ===== LOGGING CONFIGURATION =====
+logging:
+  level:
+    com.gymflow: INFO
+    com.gymflow.shared: DEBUG
+    com.gymflow.student: DEBUG
+    com.gymflow.student.application.usecase: INFO
+    org.springframework.web: INFO
+    org.hibernate: WARN
+
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
+  file:
+    name: logs/gymflow.log
+    max-size: 10MB
+    max-history: 30
+
+# ===== MDC CONFIGURATION =====
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics

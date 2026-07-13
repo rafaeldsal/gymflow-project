@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- ============================================================ -->
+    <!-- PROPRIEDADES GLOBAIS                                          -->
+    <!-- ============================================================ -->
+    <property name="LOG_PATH" value="logs"/>
+    <property name="LOG_FILE" value="${LOG_PATH}/gymflow.log"/>
+    <property name="LOG_PATTERN"
+              value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+
+    <!-- ============================================================ -->
+    <!-- APPENDER: CONSOLE (para desenvolvimento)                      -->
+    <!-- ============================================================ -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ============================================================ -->
+    <!-- APPENDER: JSON CONSOLE (para ambientes com coletor)           -->
+    <!-- ============================================================ -->
+    <appender name="JSON_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <includeMdc>true</includeMdc>
+            <includeCallerInfo>true</includeCallerInfo>
+            <timeZone>UTC</timeZone>
+            <fieldNames>
+                <timestamp>timestamp</timestamp>
+                <level>level</level>
+                <thread>thread</thread>
+                <logger>logger</logger>
+                <message>message</message>
+                <stackTrace>stackTrace</stackTrace>
+                <mdc>mdc</mdc>
+            </fieldNames>
+        </encoder>
+    </appender>
+
+    <!-- ============================================================ -->
+    <!-- APPENDER: FILE (logs em arquivo)                             -->
+    <!-- ============================================================ -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE}</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/gymflow.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ============================================================ -->
+    <!-- APPENDER: ERROR FILE (apenas erros separados)                -->
+    <!-- ============================================================ -->
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/gymflow-error.log</file>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/gymflow-error.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>90</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ============================================================ -->
+    <!-- APPENDER: LOGSTASH TCP (envio direto para ELK)               -->
+    <!-- ============================================================ -->
+    <appender name="LOGSTASH_TCP" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <!-- Endereço do Logstash - pode ser sobrescrito por variável de ambiente -->
+        <destination>${LOGSTASH_HOST:-localhost}:${LOGSTASH_PORT:-5044}</destination>
+        <keepAliveDuration>5 minutes</keepAliveDuration>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <includeMdc>true</includeMdc>
+            <includeCallerInfo>false</includeCallerInfo>
+            <timeZone>UTC</timeZone>
+            <customFields>
+                {"service":"gymflow","environment":"${SPRING_PROFILES_ACTIVE:-dev}"}
+            </customFields>
+        </encoder>
+    </appender>
+
+    <!-- ============================================================ -->
+    <!-- LOGGERS POR MÓDULO                                           -->
+    <!-- ============================================================ -->
+    <!-- Módulo Shared -->
+    <logger name="com.gymflow.shared" level="DEBUG"/>
+
+    <!-- Módulo Student -->
+    <logger name="com.gymflow.student" level="DEBUG"/>
+    <logger name="com.gymflow.student.application.usecase" level="INFO"/>
+    <logger name="com.gymflow.student.infrastructure" level="DEBUG"/>
+
+    <!-- Módulo Auth (exemplo) -->
+    <logger name="com.gymflow.auth" level="INFO"/>
+    <logger name="com.gymflow.auth.application.usecase" level="INFO"/>
+    <logger name="com.gymflow.auth.domain.service" level="DEBUG"/>
+
+    <!-- Módulo Tenant (exemplo) -->
+    <logger name="com.gymflow.tenant" level="INFO"/>
+
+    <!-- Módulo Enrollment (exemplo) -->
+    <logger name="com.gymflow.enrollment" level="INFO"/>
+
+    <!-- ============================================================ -->
+    <!-- LOGGERS DE PERFORMANCE E SEGURANÇA                           -->
+    <!-- ============================================================ -->
+    <logger name="com.gymflow.performance" level="INFO"/>
+    <logger name="com.gymflow.security" level="INFO"/>
+
+    <!-- ============================================================ -->
+    <!-- LOGGERS DE FRAMEWORKS (para reduzir ruído)                   -->
+    <!-- ============================================================ -->
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.springframework.web" level="INFO"/>
+    <logger name="org.hibernate" level="WARN"/>
+    <logger name="org.apache.kafka" level="WARN"/>
+    <logger name="org.springframework.kafka" level="INFO"/>
+
+    <!-- ============================================================ -->
+    <!-- ROOT LOGGER                                                  -->
+    <!-- ============================================================ -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="ERROR_FILE"/>
+    </root>
+
+    <!-- ============================================================ -->
+    <!-- PERFIL: DESENVOLVIMENTO (dev)                                -->
+    <!-- ============================================================ -->
+    <springProfile name="dev">
+        <root level="DEBUG">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+            <appender-ref ref="ERROR_FILE"/>
+            <!-- Se tiver ELK rodando local, descomente -->
+             <appender-ref ref="LOGSTASH_TCP"/>
+        </root>
+        <logger name="com.gymflow.shared" level="DEBUG"/>
+        <logger name="com.gymflow.student" level="DEBUG"/>
+        <logger name="com.gymflow.auth" level="DEBUG"/>
+        <logger name="org.springframework.web" level="DEBUG"/>
+        <logger name="org.hibernate" level="DEBUG"/>
+    </springProfile>
+
+    <!-- ============================================================ -->
+    <!-- PERFIL: HOMOLOGAÇÃO (hml)                                    -->
+    <!-- ============================================================ -->
+    <springProfile name="hml">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+            <appender-ref ref="ERROR_FILE"/>
+            <appender-ref ref="LOGSTASH_TCP"/> <!-- Envia para ELK -->
+        </root>
+        <logger name="com.gymflow.student" level="DEBUG"/>
+        <logger name="com.gymflow.auth" level="DEBUG"/>
+        <logger name="com.gymflow.tenant" level="DEBUG"/>
+    </springProfile>
+
+    <!-- ============================================================ -->
+    <!-- PERFIL: PRODUÇÃO (prod)                                      -->
+    <!-- ============================================================ -->
+    <springProfile name="prod">
+        <root level="WARN">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+            <appender-ref ref="ERROR_FILE"/>
+            <appender-ref ref="LOGSTASH_TCP"/> <!-- Sempre envia para ELK -->
+        </root>
+        <logger name="com.gymflow.student" level="INFO"/>
+        <logger name="com.gymflow.auth" level="INFO"/>
+        <logger name="com.gymflow.tenant" level="INFO"/>
+        <logger name="com.gymflow.enrollment" level="INFO"/>
+        <logger name="com.gymflow.student.application.usecase" level="INFO"/>
+        <logger name="com.gymflow.auth.application.usecase" level="INFO"/>
+        <logger name="org.springframework" level="WARN"/>
+        <logger name="org.hibernate" level="WARN"/>
+        <logger name="org.springframework.kafka" level="WARN"/>
+    </springProfile>
+</configuration>
