@@ -1,6 +1,6 @@
 plugins {
 	id ("java")
-	id("org.springframework.boot") version "3.5.16" apply false
+	id("org.springframework.boot") version "4.1.0" apply false
 	id("io.spring.dependency-management") version "1.1.7" apply false
 }
 
@@ -31,10 +31,10 @@ subprojects {
 
 	dependencies {
 		// Logging - disponível para TODOS os submódulos
-		implementation("org.slf4j:slf4j-api:2.0.9")
-		implementation("ch.qos.logback:logback-classic:1.4.11")
-		implementation("ch.qos.logback:logback-core:1.4.11")
-		implementation("net.logstash.logback:logstash-logback-encoder:7.4")
+		implementation("org.slf4j:slf4j-api:2.0.17")
+		implementation("ch.qos.logback:logback-classic:1.5.38")
+		implementation("ch.qos.logback:logback-core:1.5.38")
+		implementation("net.logstash.logback:logstash-logback-encoder:9.0")
 
 		// Lombok (opcional, para @Slf4j)
 		compileOnly("org.projectlombok:lombok:1.18.30")

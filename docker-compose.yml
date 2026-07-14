@@ -1,7 +1,7 @@
 services:
 
   postgres:
-    image: postgres
+    image: postgres:17
     container_name: gymflow-postgres
     restart: always
     environment:
@@ -17,7 +17,7 @@ services:
     networks:
       - gymflow-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U gymflow -d gymflow"]
+      test: ["CMD-SHELL", "pg_isready -U gymflow_database -d gymflow"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -27,7 +27,7 @@ services:
   # ELASTICSEARCH - Armazenamento e busca
   # ============================================================
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.10.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.1
     container_name: gymflow-elasticsearch
     environment:
       - discovery.type=single-node
@@ -50,7 +50,7 @@ services:
   # LOGSTASH - Processamento de logs
   # ============================================================
   logstash:
-    image: docker.elastic.co/logstash/logstash:8.10.0
+    image: docker.elastic.co/logstash/logstash:8.11.1
     container_name: gymflow-logstash
     environment:
       - ENVIRONMENT=${SPRING_PROFILES_ACTIVE:-dev}
@@ -77,11 +77,11 @@ services:
   # KIBANA - Visualização e dashboards
   # ============================================================
   kibana:
-    image: docker.elastic.co/kibana/kibana:8.10.0
+    image: docker.elastic.co/kibana/kibana:8.11.1
     container_name: gymflow-kibana
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-      - XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY=some_random_key
+      - XPACK_ENCRYPTEDSAVEDOBJECTS_ENCRYPTIONKEY=gymflow_kibana_encryption_key_2026
     ports:
       - "5601:5601"
     depends_on:
@@ -99,7 +99,7 @@ services:
   # METRICBEAT - Coleta de métricas do sistema (opcional)
   # ============================================================
   metricbeat:
-    image: docker.elastic.co/beats/metricbeat:8.10.0
+    image: docker.elastic.co/beats/metricbeat:8.11.1
     container_name: gymflow-metricbeat
     user: root
     volumes:

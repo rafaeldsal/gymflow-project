@@ -7,14 +7,11 @@ plugins {
 dependencies {
     implementation(project(":shared"))
 
-    // Para configuração especifica do LogBack (como arquivo de configuração)
-    implementation("ch.qos.logback:logback-classic:1.4.11")
-    implementation("ch.qos.logback:logback-core:1.4.11")
-
-    implementation("net.logstash.logback:logstash-logback-encoder:7.4")
-    implementation("co.elastic.logging:logback-ecs-encoder:1.7.0")
-
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.postgresql:postgresql")
+    implementation("org.flywaydb:flyway-core")
+    implementation("org.flywaydb:flyway-database-postgresql")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
